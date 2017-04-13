@@ -1,4 +1,4 @@
-import { shouldIncludeAddon } from '../../';
+import { shouldIncludeAddon } from '../../lib';
 import { module, test } from 'qunitjs';
 
 module('Should Include Addon');

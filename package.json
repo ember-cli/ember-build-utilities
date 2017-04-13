@@ -2,7 +2,7 @@
   "name": "ember-build-utilities",
   "version": "0.0.0",
   "description": "Utilities for constructing ember-cli based pipelines",
-  "main": "dist/index.js",
+  "main": "dist/lib/index.js",
   "repository": "git@github.com:ember-cli/ember-build-utilities.git",
   "author": "Chad Hietala <chadhietala@gmail.com>",
   "license": "MIT",
@@ -16,7 +16,10 @@
     "!dist/tests"
   ],
   "scripts": {
-    "build": "babel {lib,tests} --out-dir dist",
+    "build": "yarn run build:clean && yarn run build:lib && yarn run build:test",
+    "build:clean": "rm -rf dist",
+    "build:lib": "babel lib --out-dir dist/lib",
+    "build:test": "babel tests --out-dir dist/tests",
     "prepublish": "yarn build",
     "test": "yarn build  && qunit dist/**/*-test.js"
   },
