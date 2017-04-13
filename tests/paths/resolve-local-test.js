@@ -1,4 +1,4 @@
-import { resolveLocal } from '../../';
+import { resolveLocal } from '../../lib';
 import { module, test } from 'qunitjs';
 
 module('Resolve Local');

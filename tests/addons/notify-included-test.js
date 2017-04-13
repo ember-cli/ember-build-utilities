@@ -1,4 +1,4 @@
-import { notifyAddonIncluded } from '../../';
+import { notifyAddonIncluded } from '../../lib';
 import { module, test } from 'qunitjs';
 
 module('Notify Included', {
