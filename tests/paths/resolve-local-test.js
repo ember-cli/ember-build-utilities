@@ -3,10 +3,10 @@ import { module, test } from 'qunitjs';
 
 module('Resolve Local');
 
-test('handles absolute paths', (assert) => {
+test('handles absolute paths', function(assert) {
   assert.equal(resolveLocal('/foo/bar', '/baz/bar'), '/baz/bar');
 });
 
-test('resolve local path', (assert) => {
+test('resolve local path', function(assert) {
   assert.equal(resolveLocal('/foo/bar', './baz'), '/foo/bar/baz');
 });

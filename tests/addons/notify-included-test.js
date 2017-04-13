@@ -18,7 +18,7 @@ module('Notify Included', {
 
 test('allows caller to notify', function(assert) {
   let addons = [];
-  notifyAddonIncluded(this.project, [], [], (addon) => {
+  notifyAddonIncluded(this.project, [], [], addon => {
     addons.push(addon.name);
     return addon;
   });
@@ -29,12 +29,12 @@ test('allows caller to notify', function(assert) {
 
 test('blacklist throws if unavailable addon is specified', function(assert) {
   assert.throws(() => {
-    notifyAddonIncluded(this.project, ['bake'], [], (addon) => {});
+    notifyAddonIncluded(this.project, ['bake'], [], () => {});
   }, /Addon "bake" defined in blacklist is not found/);
 });
 
 test('whitelist throws if unavailable addon is specified', function(assert) {
   assert.throws(() => {
-    notifyAddonIncluded(this.project, [], ['off'], (addon) => {});
+    notifyAddonIncluded(this.project, [], ['off'], () => {});
   }, /Addon "off" defined in whitelist is not found/);
 });
