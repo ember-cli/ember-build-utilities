@@ -16,7 +16,7 @@ module('find-lib', () => {
       assert.equal(foundLib, join(NODE_MODULES_PATH, 'foo', 'dist'));
     });
 
-    test('finds directory of given dependency with optional libPath', (assert) => {
+    test('finds directory of given dependency with optional libPath', assert => {
       let foundLib = findLib('foo', 'bar');
       assert.equal(foundLib, join(NODE_MODULES_PATH, 'foo', 'bar'));
     });
