@@ -2,14 +2,27 @@
   "name": "ember-build-utilities",
   "version": "0.0.0",
   "description": "Utilities for constructing ember-cli based pipelines",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "git@github.com:ember-cli/ember-build-utilities.git",
   "author": "Chad Hietala <chadhietala@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.3.3",
     "qunitjs": "^2.3.1"
   },
+  "files": [
+    "dist/",
+    "!dist/tests"
+  ],
+  "scripts": {
+    "build": "babel {lib,tests} --out-dir dist",
+    "prepublish": "yarn build",
+    "test": "yarn build  && qunit dist/**/*-test.js"
+  },
   "dependencies": {
+    "@glimmer/compiler": "^0.22.0",
+    "@glimmer/wire-format": "^0.23.0-alpha.7",
     "babel-plugin-check-es2015-constants": "^6.22.0",
     "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
     "babel-plugin-transform-es2015-block-scoping": "^6.24.1",
@@ -23,6 +36,8 @@
     "babel-plugin-transform-proto-to-assign": "^6.23.0",
     "broccoli-babel-transpiler": "^5.6.2",
     "broccoli-funnel": "^1.1.0",
+    "broccoli-persistent-filter": "^1.2.13",
+    "broccoli-rollup": "^1.2.0",
     "semver": "^5.3.0"
   }
 }
