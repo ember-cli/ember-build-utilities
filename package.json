@@ -40,6 +40,7 @@
     "babel-plugin-transform-es2015-template-literals": "^6.22.0",
     "babel-plugin-transform-proto-to-assign": "^6.23.0",
     "broccoli-babel-transpiler": "^5.6.2",
+    "broccoli-config-loader": "^1.0.0",
     "broccoli-funnel": "^1.1.0",
     "broccoli-persistent-filter": "^1.2.13",
     "broccoli-rollup": "^1.2.0",
