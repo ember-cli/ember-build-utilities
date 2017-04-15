@@ -14,3 +14,19 @@ test('should not include', function(assert) {
 test('blacklist takes precedence over whitelist', function(assert) {
   assert.notOk(shouldIncludeAddon({ name: 'b' }, ['b'], ['b']));
 });
+
+test('an addon that is disabled is not included', function(assert) {
+  let addon = { isEnabled() { return false; } };
+  assert.notOk(shouldIncludeAddon(addon));
+});
+
+test('an addon that is not disabled, not blacklisted, not whitelisted, is included', function(assert) {
+  let addon = { };
+  assert.ok(shouldIncludeAddon(addon));
+});
+
+test('throws an error if both whitelist and blacklist are empty arrays', function(assert) {
+  assert.throws(() => {
+    shouldIncludeAddon({}, [], []);
+  }, /Both `whitelist` and `blacklist` cannot be empty arrays/);
+});
