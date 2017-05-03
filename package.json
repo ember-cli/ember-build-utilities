@@ -23,7 +23,7 @@
     "build:lib": "babel lib --out-dir dist/lib",
     "build:test": "babel tests --out-dir dist/tests",
     "prepublish": "yarn build",
-    "test": "yarn build  && qunit dist/**/*-test.js"
+    "test": "yarn build  && qunit dist/tests/**/*-test.js"
   },
   "dependencies": {
     "@glimmer/compiler": "^0.23.0-alpha.11",
@@ -43,6 +43,7 @@
     "broccoli-funnel": "^1.1.0",
     "broccoli-persistent-filter": "^1.2.13",
     "broccoli-rollup": "^1.2.0",
+    "broccoli-test-helper": "^1.1.0",
     "fixturify": "^0.3.3",
     "lodash.defaultsdeep": "^4.6.0",
     "rimraf": "^2.6.1",
