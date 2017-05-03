@@ -42,6 +42,82 @@ module('glimmer-template-precompiler', function(hooks) {
     });
   });
 
+  module('template meta', () => {
+    test('specifier is defined in meta', async function(assert) {
+      assert.expect(1);
+
+      class MockTemplatePrecompiler extends GlimmerTemplatePrecompiler {
+        precompile(_content, metaObj) {
+          assert.equal(metaObj.meta.specifier, 'template:/foo-bar-app/components/foo-bar');
+          return 'foo';
+        }
+      }
+
+      input.write({
+        'ui': {
+          'components': {
+            'foo-bar.hbs': '"some template here"'
+          }
+        }
+      });
+
+      let templateCompiler = new MockTemplatePrecompiler(input.path(), { rootName: 'foo-bar-app' });
+      let output = await buildOutput(templateCompiler);
+    });
+
+    test('managerId is extracted from filename', async function(assert) {
+      assert.expect(2);
+
+      class MockTemplatePrecompiler extends GlimmerTemplatePrecompiler {
+        precompile(_content, metaObj) {
+          assert.equal(metaObj.meta.managerId, 'fragment');
+          return 'foo';
+        }
+      }
+
+      input.write({
+        'ui': {
+          'components': {
+            'foo-bar.fragment.hbs': '"some template here"'
+          }
+        }
+      });
+
+      let templateCompiler = new MockTemplatePrecompiler(input.path(), { rootName: 'foo-bar-app' });
+      let output = await buildOutput(templateCompiler);
+
+      assert.deepEqual(output.read(), {
+        'ui': {
+          'components': {
+            'foo-bar.ts': 'export default foo;'
+          }
+        }
+      });
+    });
+
+    test('managerId remains undefined if not present in filename', async function(assert) {
+      assert.expect(1);
+
+      class MockTemplatePrecompiler extends GlimmerTemplatePrecompiler {
+        precompile(_content, metaObj) {
+          assert.notOk(metaObj.meta.hasOwnProperty('managerId'));
+          return 'foo';
+        }
+      }
+
+      input.write({
+        'ui': {
+          'components': {
+            'foo-bar.hbs': '"some template here"'
+          }
+        }
+      });
+
+      let templateCompiler = new MockTemplatePrecompiler(input.path(), { rootName: 'foo-bar-app' });
+      let output = await buildOutput(templateCompiler);
+    });
+  });
+
   module('getTemplateSpecifier', () => {
     const rootName = 'some-root-name';
 
