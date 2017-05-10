@@ -13,6 +13,88 @@ module('glimmer-template-precompiler', function(hooks) {
     input.dispose();
   });
 
+  module('pragma tag extraction (`glimmer-custom-component-manager` feature flag)', () => {
+    test('custom component manager id is undefined but default', (assert) => {
+      assert.expect(1);
+
+      let templateContent = 'nyan cat!';
+
+      let templateCompiler = new GlimmerTemplatePrecompiler(input.path(), {
+        rootName: 'nyan-app'
+      });
+
+      let options = { meta: {} };
+      templateCompiler.precompile(templateContent, options);
+
+      assert.equal(options.meta.managerId, undefined);
+    });
+
+    test('custom component manager id is extracted from pragma tag', (assert) => {
+      assert.expect(2);
+
+      let templateContent = `{{use-component-manager "glimmer"}} nyan cat!`;
+
+      let templateCompiler = new GlimmerTemplatePrecompiler(input.path(), {
+        rootName: 'nyan-app',
+        GlimmerENV: {
+          FEATURES: {
+            'glimmer-custom-component-manager': true
+          }
+        }
+      });
+
+      let options = { meta: {} };
+      templateCompiler.precompile(templateContent, options);
+
+      assert.equal(options.meta.managerId, 'glimmer');
+      assert.equal(templateCompiler.plugins.ast.length, 1, 'ExtractPragmaTag plugin was registered');
+    });
+
+    test('custom component manager is not available if feature flag is off', (assert) => {
+      assert.expect(1);
+
+      let templateContent = `nyan cat!`;
+
+      let templateCompiler = new GlimmerTemplatePrecompiler(input.path(), {
+        rootName: 'nyan-app',
+        GlimmerENV: {
+          FEATURES: {}
+        }
+      });
+
+      let options = { meta: {} };
+      templateCompiler.precompile(templateContent, options);
+
+      assert.equal(templateCompiler.plugins.ast.length, 0, 'ExtractPragmaTag plugin was not registered');
+    });
+  });
+
+  module('template metadata', () => {
+    test('specifier is present in metadata', async function (assert) {
+      assert.expect(1);
+
+      let templateContent = 'nyan cat!';
+
+      class MockTemplatePrecompiler extends GlimmerTemplatePrecompiler {
+        precompile(_content, metaObj) {
+          assert.equal(metaObj.meta.specifier, 'template:/nyan-app/components/nyan-cat');
+          return templateContent;
+        }
+      }
+
+      input.write({
+        'ui': {
+          'components': {
+            'nyan-cat.hbs': templateContent
+          }
+        }
+      });
+
+      let templateCompiler = new MockTemplatePrecompiler(input.path(), { rootName: 'nyan-app' });
+      let output = await buildOutput(templateCompiler);
+    });
+  });
+
   module('basic broccoli functionality', () => {
     class MockTemplatePrecompiler extends GlimmerTemplatePrecompiler {
       precompile(content) {
