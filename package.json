@@ -1,6 +1,6 @@
 {
   "name": "ember-build-utilities",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Utilities for constructing ember-cli based pipelines",
   "main": "dist/lib/index.js",
   "repository": "git@github.com:ember-cli/ember-build-utilities.git",
