@@ -1,7 +1,6 @@
-import { module, test } from 'qunitjs';
+import { module, test } from 'qunit';
 import { buildOutput, createTempDir } from 'broccoli-test-helper';
 import { GlimmerTemplatePrecompiler, getTemplateSpecifier } from '../../lib/';
-import co from 'co';
 
 module('glimmer-template-precompiler', function(hooks) {
   let input = null;
@@ -71,7 +70,7 @@ module('glimmer-template-precompiler', function(hooks) {
   });
 
   module('template metadata', () => {
-    test('specifier is present in metadata', co.wrap(function *(assert) {
+    test('specifier is present in metadata', async function (assert) {
       assert.expect(1);
 
       let templateContent = 'nyan cat!';
@@ -92,8 +91,8 @@ module('glimmer-template-precompiler', function(hooks) {
       });
 
       let templateCompiler = new MockTemplatePrecompiler(input.path(), { rootName: 'nyan-app' });
-      yield buildOutput(templateCompiler);
-    }));
+      let output = await buildOutput(templateCompiler);
+    });
   });
 
   module('basic broccoli functionality', () => {
@@ -103,7 +102,7 @@ module('glimmer-template-precompiler', function(hooks) {
       }
     }
 
-    test('emits the precompiler as a default export', co.wrap(function *(assert) {
+    test('emits the precompiler as a default export', async function(assert) {
       input.write({
         'ui': {
           'components': {
@@ -113,7 +112,7 @@ module('glimmer-template-precompiler', function(hooks) {
       });
 
       let templateCompiler = new MockTemplatePrecompiler(input.path(), { rootName: 'foo-bar-app' });
-      let output = yield buildOutput(templateCompiler);
+      let output = await buildOutput(templateCompiler);
 
       assert.deepEqual(output.read(), {
         'ui': {
@@ -122,7 +121,7 @@ module('glimmer-template-precompiler', function(hooks) {
           }
         }
       });
-    }));
+    });
   });
 
   module('getTemplateSpecifier', () => {

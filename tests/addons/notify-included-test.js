@@ -1,5 +1,5 @@
 import { notifyAddonIncluded } from '../../lib';
-import { module, test } from 'qunitjs';
+import { module, test } from 'qunit';
 
 module('Notify Included', {
   beforeEach() {

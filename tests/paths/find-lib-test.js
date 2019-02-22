@@ -1,5 +1,5 @@
 import { findLib } from '../../lib';
-import { module, test } from 'qunitjs';
+import { module, test } from 'qunit';
 import fixturify from 'fixturify';
 import { join } from 'path';
 import { sync as rimraf } from 'rimraf';
